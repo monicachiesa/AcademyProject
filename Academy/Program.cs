@@ -1,30 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using Academy.Models;
-var builder = WebApplication.CreateBuilder(args);
+using Academy;
 
-// Add services to the container.
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<Contexto>(opt =>
-    opt.UseInMemoryDatabase("DatabaseAcademy"));
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+public class Program
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    public static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
+
 }
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
-
-app.MapFallbackToFile("index.html"); ;
-
-app.Run();
